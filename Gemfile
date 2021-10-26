@@ -8,6 +8,6 @@ gem 'sinatra'
 gem "sinatra-contrib"
 gem "sinatra-reloader"
 gem 'pg', group: :production
-gem 'sqlite3', group: :development
+gem 'sqlite3'
 gem 'activerecord'
 gem 'rake'
