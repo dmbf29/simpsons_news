@@ -19,19 +19,7 @@ task :console do
 end
 
 ## Active Record related rake tasks
-namespace :db do
-  desc 'remove duplicate posts'
-  task :remove_duplicates do
-    posts = Post.all
-    puts "Loadings #{posts.count} posts..."
-    posts.map do |post|
-      repeats = Post.where(name: post.name).order(votes: :desc)
-      next unless repeats.length > 1
-
-      repeats.last.destroy
-    end
-  end
-
+db_namespace = namespace :db do
   desc 'create the database'
   task :create do
     puts "Creating #{db_path}..."
@@ -46,17 +34,8 @@ namespace :db do
 
   desc 'migrate the database (options: VERSION=x).'
   task :migrate do
-    ActiveRecord::Migrator.migrations_paths << \
-      File.dirname(__FILE__) + 'db/migrate'
-    ActiveRecord::Migration.verbose = true
-    version = ENV['VERSION'] ? ENV['VERSION'].to_i : nil
-    if defined?(ActiveRecord::MigrationContext)
-      ActiveRecord::MigrationContext
-        .new(ActiveRecord::Migrator.migrations_paths)
-        .migrate(version)
-    else
-      ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths, version)
-    end
+    require_relative "utils"
+    FullStackChallengesUtils.rake_migrate(db_namespace, File.dirname(__FILE__))
   end
 
   desc 'Retrieves the current schema version number'
@@ -74,9 +53,26 @@ namespace :db do
     puts DateTime.now.strftime('%Y%m%d%H%M%S')
   end
 
+  namespace :schema do
+     desc 'Create a db/schema.rb file that can be portably used against any DB supported by AR'
+     task :dump do
+
+       require 'active_record/schema_dumper'
+       filename = 'db/schema.rb'
+
+       File.open(filename, "w:utf-8") do |file|
+         ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+       end
+     end
+   end
+
   private
 
   def db_path
-    ActiveRecord::Base.configurations.configs_for(env_name: "development").first.configuration_hash[:database]
+    if ActiveRecord.version.to_s >= "6.1"
+      ActiveRecord::Base.configurations.configs_for(env_name: 'development', name: 'primary').database
+    else
+      ActiveRecord::Base.configurations['development']['database']
+    end
   end
 end
