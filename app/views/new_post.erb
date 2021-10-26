@@ -1,0 +1,39 @@
+<h2 style="margin-top:50px">Post</h2>
+
+<% if @post.errors.present? %>
+  <p>
+    Unable to create the Post. Please review following errors:<br/>
+    <strong><%= @post.errors.full_messages.join(' and ') %></strong>
+  </p>
+<% end %>
+
+<!-- <form >
+  <label for="name">Title</label>
+  <input type="text" name="name" id="name" value="<%= params[:name] %>"/>
+
+  <label for="name">URL</label>
+  <input type="text" name="url" id="url" value="<%= params[:url] %>"/>
+  <input type="hidden" name="user_id" id="user_id" value="<%= User.all.pluck(:id).sample %>" />
+  <input type="submit" class="btn-primary" value="Add"/>
+</form> -->
+<a href="#new"></a>
+<form action="/posts" method="POST">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Title</label>
+    <input type="text" class="form-control" id="name" name="name" value="<%= @quote %>">
+  </div>
+  <div class="form-group">
+    <label for="user_id">Author</label>
+    <select multiple class="form-control" id="user_id" name="user_id">
+      <% @users.each do |user| %>
+        <option value="<%= user.id %>"><%= user.username %></option>
+      <% end %>
+    </select>
+  </div>
+  <div class="form-group">
+    <input type="submit" class="btn-primary" value="Add"/>
+  </div>
+</form>
+
+
+<div style="margin-bottom:100px"></div>

@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  adapter: sqlite3
+  database: db/simpsons_news_development
+
+test:
+  adapter: sqlite3
+  database: db/simpsons_news_test
+
+production:
+  <<: *default
+  database: simpsons_news_production
+  username: simpsons_news
+  password: <%= ENV['simpsons_news_DATABASE_PASSWORD'] %>

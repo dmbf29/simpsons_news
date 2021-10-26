@@ -1,0 +1,30 @@
+
+<hr>
+<ul style="padding:0">
+  <% @posts.each do |post| %>
+    <div style="display:flex;justify-content:space-between;border-bottom: 1px solid lightgray;align-items:center">
+      <li style="list-style-type: none;padding: 15px 0;margin-right:15px;">
+        <a href="<%= post.url %>" style="text-decoration:none; font-weight: bold;font-size:18px;color:#4c4c4c;" target="_blank"><%= post.name %></a>
+        <p style="color:#7a7a7a"><%= post.user.username %></p>
+
+        <form action="/posts/<%= post.id %>/upvote" method="POST">
+          <input type="hidden" name="_method" value="PUT">
+          <div style="display:flex;">
+            <p style="margin:0;padding-top:4px;"><%= (DateTime.now - (rand * 21)).strftime("%b %e") %></p>
+            <button type="submit" style="background-color: transparent;
+      border:none;margin-left:5px">
+            <i class="em em-raised_hands"></i>
+          </button>
+          <p style="margin:0;padding-top:4px;color: #6b6b6b"><%= post.votes %></p>
+          </div>
+        </form>
+
+      </li>
+      <% @season_num = rand(1...29).to_s %>
+      <% @episode_num = rand(1...20).to_s %>
+      <img src="<%= Post.random_photo %>" height="100px" min-width="100px">
+    </div>
+  <% end %>
+</ul>
+
+<%= erb :new_post %>
