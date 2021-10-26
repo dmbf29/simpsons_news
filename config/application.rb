@@ -1,5 +1,5 @@
 require 'active_record'
-require 'sqlite3'
+require 'sqlite3' unless ENV['environment'] == 'production'
 require 'yaml'
 
 # This is some boilerplate code to read the config/database.yml file
