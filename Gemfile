@@ -7,7 +7,8 @@ gem "pry-byebug"
 gem 'sinatra'
 gem "sinatra-contrib"
 gem "sinatra-reloader"
-gem 'pg', group: :production
-gem 'sqlite3', group: :development
-gem 'activerecord'
-gem 'rake'
+gem "pg"
+gem "rake"
+gem "rspec"
+gem "sinatra-activerecord"
+gem "sqlite3", group: :development
