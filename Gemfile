@@ -9,4 +9,5 @@ gem "sinatra-contrib"
 gem "sinatra-reloader"
 gem 'pg', group: :production
 gem 'sqlite3', group: :development
+gem 'activerecord'
 gem 'rake'
